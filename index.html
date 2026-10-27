@@ -21,7 +21,7 @@
   --body:'Pixelify Sans', 'Trebuchet MS', 'Segoe UI', sans-serif;
   color-scheme:dark;
 }
-html,body{height:100%}
+html{height:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.4;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:12px}
 *{box-sizing:border-box}
@@ -97,7 +97,7 @@ h1,h2{font-family:var(--display);font-weight:400;letter-spacing:1px;text-wrap:ba
 @keyframes shake{33%{transform:translateX(-4px)}66%{transform:translateX(4px)}}
 .prog .tile,.loop .grab{touch-action:none}
 
-.loop{display:flex;align-items:center;gap:8px;border:3px solid var(--amber);background:#2C2C2A;padding:8px;position:relative;flex-wrap:wrap}
+.loop{display:flex;align-items:center;gap:8px;border:3px solid var(--amber);background:#2C2C2A;padding:8px;position:relative;flex-wrap:wrap;max-width:100%}
 .loop.sel{background:var(--shell);outline:3px solid var(--gold);outline-offset:2px}
 .loop.inner{border-color:var(--lilac)}
 .loop .grab{display:block;cursor:grab}
@@ -176,6 +176,34 @@ h2{font-size:12px;color:var(--gold);margin:18px 0 8px}
 .bob{animation:bob .7s steps(2) infinite}
 @keyframes bob{50%{transform:translateY(-6px)}}
 
+/* Невисокі широкі екрани (ноутбуки, планшети горизонтально): сцена зліва, програма справа */
+.lv-grid{display:block}
+.stagebox svg{max-height:calc(100dvh - 430px);min-height:170px;width:auto;max-width:100%;margin:0 auto}
+@media (min-width:700px) and (min-aspect-ratio:5/4){
+  body:has(#level:not([hidden])) .wrap{max-width:1480px}
+  .lv-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:14px;align-items:start}
+  .lv-left,.lv-right{min-width:0}
+  .stagebox svg{max-height:calc(100dvh - 150px);min-height:0}
+  .lv-right .prog{min-height:86px}
+  .lv-right .palette{margin-top:6px}
+  .lv-right .row-c{margin-top:10px!important}
+  .task{font-size:16px;margin:8px 0 0}
+  .loop{flex-wrap:nowrap;gap:6px;padding:6px}
+  .loop .vcol{flex:1;min-width:0}
+  .lv-right .palette .label{display:none}
+}
+@media (max-height:520px){
+  body{padding-block:6px}
+  .bar{margin-bottom:6px}
+  .ibtn{height:40px;min-width:40px}
+  .tile{width:54px;height:56px;font-size:10px;border-bottom-width:5px}
+  .tile svg{width:24px;height:24px}
+  .vslot{width:54px;height:56px}
+  .verse{min-height:66px}
+  .loop .disc{width:40px;height:40px}
+  .big{padding:11px 14px;font-size:12px;border-bottom-width:6px}
+  .palette .label{display:none}
+}
 @media (max-width:560px){
   .tile{width:58px;height:60px;font-size:11px}
   .tile svg{width:26px;height:26px}
@@ -226,12 +254,14 @@ h2{font-size:12px;color:var(--gold);margin:18px 0 8px}
     <button class="ibtn lamp" id="lamp" aria-label="Підказка"></button>
     <button class="ibtn snd" aria-label="Звук"></button>
   </div>
+  <div class="lv-grid"><div class="lv-left">
   <div class="stagebox" id="stagebox">
     <svg id="stage" viewBox="0 0 640 300" shape-rendering="crispEdges" role="img" aria-label="Сцена з танцюристами"></svg>
     <div class="bubble" id="bubble" hidden></div>
     <div class="pop" id="pop" hidden></div>
   </div>
   <div class="task"><span id="tasktext"></span><button class="big small green" id="sample" hidden>▶ ЗРАЗОК</button></div>
+  </div><div class="lv-right">
   <div class="prog" id="track" aria-label="Твоя програма"></div>
   <div class="meta"><span>Карток у програмі: <b id="count">0</b></span><span id="selinfo"></span></div>
   <div class="palette" id="palette"></div>
@@ -239,6 +269,7 @@ h2{font-size:12px;color:var(--gold);margin:18px 0 8px}
     <button class="big green" id="clear">✕ ОЧИСТИТИ</button>
     <button class="big" id="run">▶ ТАНЦЮЙ!</button>
   </div>
+  </div></div>
 </section>
 
 <section id="win" hidden>
